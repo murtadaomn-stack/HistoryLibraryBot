@@ -1,25 +1,33 @@
 import os
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "📚 أهلاً بك في History Library AI\n\n"
-        "البوت يعمل بنجاح ✅"
-    )
+from telegram.ext import (
+    Application,
+        CommandHandler,
+        )
 
-def main():
-    token = os.getenv("BOT_TOKEN")
+        from config import BOT_TOKEN
+        from database import init_db
+        from handlers.start import start
 
-    if not token:
-        raise ValueError("BOT_TOKEN غير موجود في متغيرات البيئة")
 
-    app = Application.builder().token(token).build()
+        def main():
 
-    app.add_handler(CommandHandler("start", start))
+            if not BOT_TOKEN:
+                    raise Exception("BOT_TOKEN غير موجود")
 
-    print("Bot is running...")
-    app.run_polling()
+                        os.makedirs("books", exist_ok=True)
+                            os.makedirs("data", exist_ok=True)
 
-if __name__ == "__main__":
-    main()
+                                init_db()
+
+                                    app = Application.builder().token(BOT_TOKEN).build()
+
+                                        app.add_handler(CommandHandler("start", start))
+
+                                            print("History Library AI Started")
+
+                                                app.run_polling()
+
+
+                                                if __name__ == "__main__":
+                                                    main()
