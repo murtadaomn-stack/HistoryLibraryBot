@@ -5,6 +5,7 @@ from telegram.ext import (
     Application,
     CommandHandler,
     MessageHandler,
+    CallbackQueryHandler,
     filters,
 )
 
@@ -14,6 +15,7 @@ from database import init_db
 from handlers.start import start
 from handlers.pdf import pdf_handler
 from handlers.search import search
+from handlers.admin import admin, admin_buttons
 
 
 def main():
@@ -25,16 +27,41 @@ def main():
 
     os.makedirs("books", exist_ok=True)
     os.makedirs("data", exist_ok=True)
+    os.makedirs("temp", exist_ok=True)
 
     init_db()
 
     app = Application.builder().token(BOT_TOKEN).build()
 
-    # أوامر البوت
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("search", search))
+    # ==========================
+    # Commands
+    # ==========================
 
-    # استقبال ملفات PDF
+    app.add_handler(
+        CommandHandler(
+            "start",
+            start
+        )
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "search",
+            search
+        )
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "admin",
+            admin
+        )
+    )
+
+    # ==========================
+    # PDF Upload
+    # ==========================
+
     app.add_handler(
         MessageHandler(
             filters.Document.PDF,
@@ -42,9 +69,19 @@ def main():
         )
     )
 
-    print("======================================")
+    # ==========================
+    # Inline Buttons
+    # ==========================
+
+    app.add_handler(
+        CallbackQueryHandler(
+            admin_buttons
+        )
+    )
+
+    print("===================================")
     print("📚 History Library AI Started")
-    print("======================================")
+    print("===================================")
 
     app.run_polling(close_loop=False)
 
