@@ -64,7 +64,6 @@ async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     elif query.data == "all_books":
-
     await list_books(update, context)
 
     return
