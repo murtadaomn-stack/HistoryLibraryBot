@@ -60,30 +60,33 @@ async def pdf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     summary = create_summary(text)
-
-    cursor.execute(
-        """
-        INSERT INTO books
-        (
-            title,
-            file_name,
-            file_hash,
-            telegram_file_id,
-            pages,
-            message_id
-        )
-
-        VALUES (?,?,?,?,?,?)
-        """,
-        (
-            document.file_name,
-            document.file_name,
-            file_hash,
-            document.file_id,
-            pages,
-            update.message.message_id,
-        ),
+cursor.execute(
+    """
+    INSERT INTO books
+    (
+        title,
+        file_name,
+        file_hash,
+        telegram_file_id,
+        pages,
+        summary,
+        full_text,
+        message_id
     )
+
+    VALUES (?,?,?,?,?,?,?,?)
+    """,
+    (
+        document.file_name,
+        document.file_name,
+        file_hash,
+        document.file_id,
+        pages,
+        summary,
+        text,
+        update.message.message_id,
+    ),
+)
 
     conn.commit()
     conn.close()
