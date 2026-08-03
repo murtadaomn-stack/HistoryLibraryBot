@@ -3,6 +3,7 @@ import os
 
 DB_PATH = "data/books.db"
 
+
 def init_db():
     os.makedirs("data", exist_ok=True)
 
@@ -10,7 +11,7 @@ def init_db():
             cursor = conn.cursor()
 
                 cursor.execute("""
-                    CREATE TABLE IF NOT EXISTS books(
+                    CREATE TABLE IF NOT EXISTS books (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                                     title TEXT,
                                             author TEXT,
