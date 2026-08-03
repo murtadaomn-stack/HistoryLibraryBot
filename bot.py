@@ -10,11 +10,14 @@ from telegram.ext import (
 
 from config import BOT_TOKEN
 from database import init_db
+
 from handlers.start import start
 from handlers.pdf import pdf_handler
+from handlers.search import search
 
 
 def main():
+
     if not BOT_TOKEN:
         raise Exception("BOT_TOKEN is not set")
 
@@ -27,7 +30,9 @@ def main():
 
     app = Application.builder().token(BOT_TOKEN).build()
 
+    # أوامر البوت
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("search", search))
 
     # استقبال ملفات PDF
     app.add_handler(
@@ -37,7 +42,9 @@ def main():
         )
     )
 
-    print("History Library AI Started")
+    print("======================================")
+    print("📚 History Library AI Started")
+    print("======================================")
 
     app.run_polling(close_loop=False)
 
