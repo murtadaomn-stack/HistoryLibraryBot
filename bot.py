@@ -1,4 +1,5 @@
 import os
+import asyncio
 
 from telegram.ext import Application, CommandHandler
 
@@ -11,6 +12,8 @@ def main():
     if not BOT_TOKEN:
         raise Exception("BOT_TOKEN is not set")
 
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
     os.makedirs("books", exist_ok=True)
     os.makedirs("data", exist_ok=True)
 
@@ -22,7 +25,7 @@ def main():
 
     print("History Library AI Started")
 
-    app.run_polling()
+    app.run_polling(close_loop=False)
 
 
 if __name__ == "__main__":
