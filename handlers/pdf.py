@@ -7,7 +7,6 @@ from telegram.ext import ContextTypes
 
 from services.pdf_reader import extract_pdf_text, create_summary
 
-
 DB_PATH = "data/books.db"
 
 
@@ -40,53 +39,47 @@ async def pdf_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     if cursor.fetchone():
-
         conn.close()
-
         await update.message.reply_text("📚 هذا الكتاب موجود مسبقًا.")
-
         return
 
     try:
-
         text, pages = extract_pdf_text(file_path)
+        summary = create_summary(text)
 
-    except Exception:
-
+    except Exception as e:
         conn.close()
-
+        print(e)
         await update.message.reply_text("❌ تعذر قراءة ملف PDF.")
-
         return
 
-    summary = create_summary(text)
-cursor.execute(
-    """
-    INSERT INTO books
-    (
-        title,
-        file_name,
-        file_hash,
-        telegram_file_id,
-        pages,
-        summary,
-        full_text,
-        message_id
-    )
+    cursor.execute(
+        """
+        INSERT INTO books
+        (
+            title,
+            file_name,
+            file_hash,
+            telegram_file_id,
+            pages,
+            summary,
+            full_text,
+            message_id
+        )
 
-    VALUES (?,?,?,?,?,?,?,?)
-    """,
-    (
-        document.file_name,
-        document.file_name,
-        file_hash,
-        document.file_id,
-        pages,
-        summary,
-        text,
-        update.message.message_id,
-    ),
-)
+        VALUES (?,?,?,?,?,?,?,?)
+        """,
+        (
+            document.file_name,
+            document.file_name,
+            file_hash,
+            document.file_id,
+            pages,
+            summary,
+            text,
+            update.message.message_id,
+        ),
+    )
 
     conn.commit()
     conn.close()
