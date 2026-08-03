@@ -1,8 +1,24 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_ID = int(os.getenv("API_ID"))
+
+API_HASH = os.getenv("API_HASH")
+
+PHONE = os.getenv("PHONE")
+
+CHANNEL = os.getenv("CHANNEL")
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-CHANNEL_ID = os.getenv("CHANNEL_ID")
 
-DATABASE_NAME = "data/books.db"
-BOOKS_FOLDER = "books"
+DB_PATH = "data/books.db"
+
+TEMP_PATH = "temp"
+
+BOOKS_PATH = "books"
+
+REPORT_PATH = "reports"
+
+SESSION = "sessions/history_library"
