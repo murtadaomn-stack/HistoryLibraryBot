@@ -1,7 +1,7 @@
 from telegram import (
     Update,
-    InlineKeyboardButton,
     InlineKeyboardMarkup,
+    InlineKeyboardButton,
 )
 from telegram.ext import ContextTypes
 
@@ -9,134 +9,81 @@ from telegram.ext import ContextTypes
 async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
-
         [
             InlineKeyboardButton(
                 "📥 فحص القناة",
-                callback_data="scan"
+                callback_data="scan_channel",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "📚 جميع الكتب",
-                callback_data="books"
+                callback_data="all_books",
             )
         ],
-
         [
             InlineKeyboardButton(
-                "🔍 البحث",
-                callback_data="search"
+                "🔍 فحص المكرر",
+                callback_data="duplicates",
             )
         ],
-
-        [
-            InlineKeyboardButton(
-                "♻️ الكتب المكررة",
-                callback_data="duplicates"
-            )
-        ],
-
         [
             InlineKeyboardButton(
                 "🗑 حذف المكرر",
-                callback_data="clean"
+                callback_data="delete_duplicates",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "📊 الإحصائيات",
-                callback_data="stats"
+                callback_data="stats",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "🔄 إعادة الفهرسة",
-                callback_data="reindex"
+                callback_data="reindex",
             )
-        ]
-
+        ],
     ]
 
     await update.message.reply_text(
         "📚 لوحة إدارة History Library AI",
-        reply_markup=InlineKeyboardMarkup(keyboard)
+        reply_markup=InlineKeyboardMarkup(keyboard),
     )
 
 
 async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
-
     await query.answer()
 
-    if query.data == "scan":
-
+    if query.data == "scan_channel":
         await query.edit_message_text(
-            "📥 سيتم تشغيل فحص القناة قريباً..."
+            "📥 سيتم قريباً بدء فحص القناة..."
         )
 
-    elif query.data == "books":
-
+    elif query.data == "all_books":
         await query.edit_message_text(
-            "📚 سيتم عرض جميع الكتب..."
-        )
-
-    elif query.data == "search":
-
-        await query.edit_message_text(
-            "🔍 اكتب:\n/search اسم الكتاب"
+            "📚 سيتم قريباً عرض جميع الكتب..."
         )
 
     elif query.data == "duplicates":
-
         await query.edit_message_text(
-            "♻️ جاري فحص الكتب المكررة..."
+            "🔍 سيتم قريباً فحص الكتب المكررة..."
         )
 
-    elif query.data == "clean":
-
-        keyboard = [
-            [
-                InlineKeyboardButton(
-                    "✅ نعم",
-                    callback_data="confirm_clean"
-                ),
-                InlineKeyboardButton(
-                    "❌ لا",
-                    callback_data="cancel_clean"
-                )
-            ]
-        ]
-
+    elif query.data == "delete_duplicates":
         await query.edit_message_text(
-            "⚠️ هل تريد حذف جميع الكتب المكررة؟",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-
-    elif query.data == "confirm_clean":
-
-        await query.edit_message_text(
-            "🗑 سيتم حذف الكتب المكررة...\n(سنربطها لاحقاً مع Telethon)"
-        )
-
-    elif query.data == "cancel_clean":
-
-        await query.edit_message_text(
-            "❌ تم إلغاء العملية."
+            "🗑 سيتم قريباً حذف الكتب المكررة..."
         )
 
     elif query.data == "stats":
-
         await query.edit_message_text(
-            "📊 جاري استخراج الإحصائيات..."
+            "📊 سيتم قريباً عرض الإحصائيات..."
         )
 
     elif query.data == "reindex":
-
         await query.edit_message_text(
-            "🔄 سيتم إعادة فهرسة المكتبة..."
+            "🔄 سيتم قريباً إعادة فهرسة القناة..."
         )
