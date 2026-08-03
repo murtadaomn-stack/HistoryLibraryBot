@@ -4,7 +4,7 @@ from telegram import (
     InlineKeyboardButton,
 )
 from telegram.ext import ContextTypes
-
+from handlers.books import list_books
 
 async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
@@ -64,9 +64,10 @@ async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     elif query.data == "all_books":
-        await query.edit_message_text(
-            "📚 سيتم قريباً عرض جميع الكتب..."
-        )
+
+    await list_books(update, context)
+
+    return
 
     elif query.data == "duplicates":
         await query.edit_message_text(
