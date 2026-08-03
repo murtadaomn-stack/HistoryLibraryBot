@@ -1,11 +1,17 @@
 import os
 import asyncio
 
-from telegram.ext import Application, CommandHandler
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters,
+)
 
 from config import BOT_TOKEN
 from database import init_db
 from handlers.start import start
+from handlers.pdf import pdf_handler
 
 
 def main():
@@ -22,6 +28,14 @@ def main():
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
+
+    # استقبال ملفات PDF
+    app.add_handler(
+        MessageHandler(
+            filters.Document.PDF,
+            pdf_handler,
+        )
+    )
 
     print("History Library AI Started")
 
