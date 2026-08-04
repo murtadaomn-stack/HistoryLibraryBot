@@ -64,9 +64,8 @@ async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     elif query.data == "all_books":
-    await list_books(update, context)
-
-    return
+        await list_books(update, context)
+        return
 
     elif query.data == "duplicates":
         await query.edit_message_text(
