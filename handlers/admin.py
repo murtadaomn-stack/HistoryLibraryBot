@@ -15,49 +15,42 @@ from handlers.books import list_books
 async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
-
         [
             InlineKeyboardButton(
                 "📥 فحص القناة",
                 callback_data="scan_channel",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "📚 جميع الكتب",
                 callback_data="all_books",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "🔍 فحص المكرر",
                 callback_data="duplicates",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "🗑 حذف المكرر",
                 callback_data="delete_duplicates",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "📊 الإحصائيات",
                 callback_data="stats",
             )
         ],
-
         [
             InlineKeyboardButton(
                 "🔄 إعادة الفهرسة",
                 callback_data="reindex",
             )
         ],
-
     ]
 
     await update.message.reply_text(
@@ -69,7 +62,6 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
-
     await query.answer()
 
     if query.data == "scan_channel":
@@ -87,10 +79,10 @@ async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         return
-            elif query.data == "all_books":
+
+    elif query.data == "all_books":
 
         await list_books(update, context)
-
         return
 
     elif query.data == "duplicates":
@@ -149,15 +141,15 @@ async def admin_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data == "reindex":
 
-        await query.edit_message_text(
-            "🔄 جاري إعادة الفهرسة..."
+        msg = await query.edit_message_text(
+            "🔄 بدأت إعادة الفهرسة...\n\n⏳ يرجى الانتظار..."
         )
 
         asyncio.create_task(
             scan_channel(
                 bot=context.bot,
                 chat_id=query.message.chat_id,
-                message_id=query.message.message_id,
+                message_id=msg.message_id,
             )
         )
 
