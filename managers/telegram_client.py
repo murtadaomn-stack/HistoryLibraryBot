@@ -7,9 +7,8 @@ load_dotenv()
 
 API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
-PHONE = os.getenv("PHONE")
 
-# إنشاء مجلد sessions إذا لم يكن موجودًا
+# إنشاء مجلد الجلسات إذا لم يكن موجودًا
 os.makedirs("sessions", exist_ok=True)
 
 client = TelegramClient(
@@ -18,6 +17,13 @@ client = TelegramClient(
     API_HASH
 )
 
+
 async def connect():
-    await client.start(phone=PHONE)
+    await client.connect()
+
+    if not await client.is_user_authorized():
+        raise Exception(
+            "Session غير مسجلة. قم بتسجيل الدخول مرة واحدة محليًا ثم ارفع ملف sessions/history_library.session."
+        )
+
     return client
